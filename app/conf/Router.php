@@ -1,7 +1,7 @@
 <?php
 
 namespace Sysel\Conf;
-use Exception;
+use Sysel\conf\Exceptions\Autorun_exception;
 
 class Router {
     
@@ -43,12 +43,13 @@ class Router {
         $folder = "{$this->env->get_param('root')}/pages/{$page_name}";
         $controller_path = "Sysel\\pages\\{$page_name}\\{$page_name}_controller";
         unset($parsed[0]);
+        $parsed = array_values($parsed);
         
         try {
             $controller = new $controller_path($this->env, $folder, $parsed);
             return $controller;
         }
-        catch (Exception $e) {
+        catch (Autorun_exception $e) {
             return $this->not_found;
         }        
     }

@@ -3,7 +3,7 @@
 namespace Sysel\Conf;
 
 use \Sysel\Conf\Db_wrap;
-use Exception;
+use Sysel\conf\Exceptions\Autorun_exception;
 
 class Env {
     
@@ -76,7 +76,7 @@ class Env {
             include_once $class_nm;
         }
         else {
-            throw new Exception("<br>třída {$class_nm} nenalazena<br>");
+            throw new Autorun_exception("<br>třída {$class_nm} nenalazena<br>");
         }
     }
     

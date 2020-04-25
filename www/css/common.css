@@ -1,0 +1,32 @@
+.hidden {
+    display: none;
+}
+
+.w3_table {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+.w3_table td, .w3_table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+.w3_table tr:nth-child(even){background-color: #f2f2f2;}
+.w3_table tr:hover {background-color: #ddd;}
+.w3_table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+
+p.error, ul.error li {
+    color: red;
+    font-weight: bold;
+}
+
+p.message {
+    color: blue;
+}
+
