@@ -2,20 +2,15 @@
 
 
 namespace Sysel\Pages\Sklady;
-use Sysel\Conf\Env;
+use Sysel\Conf\Models;
 use Sysel\Utils\Array_tools;
 use Sysel\Utils\Date_tools;
 use Sysel\Data_objects\Seznam_skladu;
 use Sysel\Utils\Xss_fix;
 
 
-class Sklady_model {
-    protected $env;
-    
-    public function __construct(Env $env) {
-        $this->env = $env;        
-    }
-    
+class Sklady_model extends Models {
+        
     public function zobraz_sklady() {
         $vsechny_sklady = $this->env->db->dotaz_vse("SELECT * FROM sysel.warehouse");
         if ($vsechny_sklady) {
@@ -63,21 +58,21 @@ class Sklady_model {
         return $this->env->db->dotaz_sloupec("select distinct warehouse_id from item", 'warehouse_id');        
     }
     
-    public function existuje_sklad_dle_id(int $id) {
+    public function existuje_dle_id(int $id) {
         $warehose_exists = $this->env->db->dotaz_hodnota(
                     "select count(*) from warehouse where id=:id", 
                     array(':id' => $id));
         return $warehose_exists != 0;
     }
     
-    public function existuje_sklad_dle_jmena(string $name) {
+    public function existuje_dle_jmena(string $name) {
         $warehose_exists = $this->env->db->dotaz_hodnota(
                     "select count(*) from warehouse where name=:name", 
                     array(':name' => $name));
         return $warehose_exists != 0;
     }
     
-    public function jmeno_skladu($id) {
+    public function jmeno_skladu(int $id) {
         $xss = new Xss_fix;
         $name = $this->env->db->dotaz_hodnota(
                 "SELECT name FROM sysel.warehouse where id=:id", 
@@ -86,12 +81,12 @@ class Sklady_model {
         return $xss->fix_string($name);        
     }
     
-    public function rename($id, $name) {
+    public function rename(int $id, string $name) {
         $this->env->db->sendSQL("update warehouse set name=:name where id=:id", 
                 array(':id' => trim($id), ':name' => trim($name)));                
     }
     
-    public function delete($id) {
+    public function delete(int $id) {
         $this->env->db->sendSQL("delete FROM warehouse where id=:id", 
                 array(':id' => trim($id)));
     }

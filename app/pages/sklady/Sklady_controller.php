@@ -56,10 +56,5 @@ class Sklady_controller extends Controllers {
         }
         $this->seznam_skladu = $sklady->zobraz_sklady();                
         require "{$this->folder}/sklady.php";     
-    }
-    
-    public function reload() {
-        echo "<script>window.location.replace('{$this->get_webroot()}/sklady')</script>";
-        exit();
-    }
+    }    
 }

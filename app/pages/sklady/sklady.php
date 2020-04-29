@@ -24,11 +24,11 @@
                 <td>
                     <div class="rename_warehouse hidden" id="rename_div_<?=$sklad->id?>">
                         <form method="post">
-                            <input type="text" name="rename[<?=$sklad->id?>]">
+                            <input type="text" name="rename[<?=$sklad->id?>]" value="<?=$sklad->name?>">
                             <input type="submit" name="action[rename]" value="ok">
                         </form>                        
                     </div>
-                    <button type="button" class="rename_butt" data-wid="<?=$sklad->id?>">Přejmenovat</button>
+                    <button type="button" class="rename_butt" data-id="<?=$sklad->id?>">Přejmenovat</button>
                 </td>
                 <td>
                     <div class="delete_warehouse">

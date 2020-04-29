@@ -1,6 +1,7 @@
 <?php
 
 namespace Sysel\Conf;
+use Sysel\Conf\Router;
 
 abstract class Controllers {
     
@@ -48,5 +49,13 @@ abstract class Controllers {
     
     public function get_webroot() {
         return $this->webroot;        
+    }
+    
+    public function reload() {
+        $router = new Router($this->env);
+        $parsed = $router->parse($_SERVER['REQUEST_URI']);
+        $page_nm = trim($parsed[0]);
+        echo "<script>window.location.replace('{$this->webroot}/{$page_nm}')</script>";
+        exit();
     }
 }
