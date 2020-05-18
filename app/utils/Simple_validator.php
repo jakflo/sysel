@@ -82,6 +82,14 @@ class Simple_validator {
         return $this;                
     }
     
+    public function is_date_valid() {
+        if ($this->all_good) {
+            $tempDate = explode('-', $this->val);
+            $this->all_good = checkdate($tempDate[1], $tempDate[2], $tempDate[0]);            
+        }
+        return $this;        
+    }
+    
     // ověří, zda ve vstupním array jsou všechny hodnoty v klíčích $array_keys neprázdné
     // je-li $array_keys prázdný, ověří všechny hodnoty
     public function not_empty_in_array(array $array_keys = array()) {

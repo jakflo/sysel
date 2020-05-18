@@ -30,3 +30,22 @@ p.message {
     color: blue;
 }
 
+span.grey {
+    color: grey;
+}
+
+div.strankovac {
+    margin: 15px 2px;
+}
+div.strankovac a, div.strankovac span {
+    padding: 5px;
+    font-size: 28px;
+}
+div.strankovac span.curr_page {
+    background-color: greenyellow;
+}
+
+button.marked {
+    background: linear-gradient(to bottom, #99ff66 0%, #009900 100%);
+}
+

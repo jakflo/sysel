@@ -36,8 +36,15 @@ class Db_wrap {
     }
     
     public function sendSQL(string $sql, array $para_arr = array()) {
-        $prepared = $this->conn->prepare($sql);
-        $prepared->execute($para_arr);
+        try {
+            $prepared = $this->conn->prepare($sql);
+            $prepared->execute($para_arr);
+        }
+        catch (PDOException $e) {
+            echo "<br>{$sql}<br>";
+            print_r($para_arr);
+            throw $e;
+        }
         return $prepared;
     }
     

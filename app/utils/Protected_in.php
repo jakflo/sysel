@@ -1,7 +1,7 @@
 <?php
 
 namespace Sysel\Utils;
-use Exception;
+use Sysel\conf\Exceptions\Array_tool_exception;
 
 /*
  * slouží k přípravě polí ke vložení do IN termu v DB dotazu, kde je riziko SQL útoku
@@ -13,6 +13,9 @@ class Protected_in {
     
     // $data je prostý 1D array
     public function add_array(string $prefix, array $data) {
+        if (count($data) == 0) {
+            throw new Array_tool_exception('Pole pro IN nemuze byt prazdne');
+        }
         $c = isset($this->prefixes[$prefix])? $this->prefixes[$prefix] : 0;
         foreach ($data as $val) {
             $this->data[":{$prefix}{$c}"] = $val;
@@ -23,7 +26,7 @@ class Protected_in {
     
     public function get_tokens(string $prefix) {
         if (!isset($this->prefixes[$prefix])) {
-            throw new Exception("Prefix {$prefix} nenalezen");
+            throw new Array_tool_exception("Prefix {$prefix} nenalezen");
         }
         else {
             $tokens = array();

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 30, 2020 at 08:21 PM
+-- Generation Time: May 14, 2020 at 10:31 PM
 -- Server version: 5.7.17-log
 -- PHP Version: 7.1.2
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `sysel`
 --
+CREATE DATABASE IF NOT EXISTS `sysel` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `sysel`;
 
 -- --------------------------------------------------------
 
@@ -41,7 +43,8 @@ CREATE TABLE `address` (
 
 INSERT INTO `address` (`id`, `street`, `city`, `country`) VALUES
 (1, ' Elphinstone Road 304', 'Mumbai', 'India'),
-(2, '6611 Zuni Rd SE', 'Albuquerque', 'USA');
+(2, '6611 Zuni Rd SE', 'Albuquerque', 'USA'),
+(3, 'Mostní 11', 'Most', 'Czech');
 
 -- --------------------------------------------------------
 
@@ -51,6 +54,7 @@ INSERT INTO `address` (`id`, `street`, `city`, `country`) VALUES
 
 CREATE TABLE `client` (
   `id` int(10) UNSIGNED NOT NULL,
+  `company_name` varchar(64) DEFAULT NULL,
   `forname` varchar(45) NOT NULL,
   `surname` varchar(45) NOT NULL,
   `middlename` varchar(45) DEFAULT NULL,
@@ -61,6 +65,13 @@ CREATE TABLE `client` (
   `added` date NOT NULL,
   `note` varchar(128) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `client`
+--
+
+INSERT INTO `client` (`id`, `company_name`, `forname`, `surname`, `middlename`, `title`, `email`, `phone`, `address_id`, `added`, `note`) VALUES
+(1, NULL, 'Dan', 'Šroubek', NULL, NULL, 'dšr@mail.cz', '800000000', 3, '2020-05-05', NULL);
 
 -- --------------------------------------------------------
 
@@ -73,6 +84,7 @@ CREATE TABLE `item` (
   `warehouse_id` int(11) NOT NULL,
   `item_detail_id` int(11) NOT NULL,
   `added` date NOT NULL,
+  `order_id` int(11) DEFAULT NULL,
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -80,47 +92,58 @@ CREATE TABLE `item` (
 -- Dumping data for table `item`
 --
 
-INSERT INTO `item` (`id`, `warehouse_id`, `item_detail_id`, `added`, `status`) VALUES
-(4, 1, 1, '2020-02-01', 1),
-(5, 1, 2, '2020-02-01', 1),
-(6, 1, 3, '2020-04-15', 1),
-(7, 1, 2, '2020-01-08', 3),
-(8, 1, 1, '2020-02-01', 1),
-(9, 1, 1, '2020-02-01', 1),
-(10, 1, 1, '2020-02-01', 1),
-(11, 1, 1, '2020-02-01', 1),
-(12, 1, 1, '2020-02-01', 1),
-(13, 1, 1, '2020-02-01', 1),
-(14, 1, 1, '2020-02-01', 1),
-(15, 1, 1, '2020-02-01', 1),
-(16, 1, 1, '2020-02-01', 1),
-(17, 1, 1, '2020-02-01', 1),
-(18, 1, 1, '2020-02-01', 1),
-(19, 1, 1, '2020-02-01', 1),
-(20, 1, 2, '2020-02-01', 1),
-(21, 1, 2, '2020-02-01', 1),
-(22, 1, 2, '2020-02-01', 1),
-(23, 1, 2, '2020-02-01', 1),
-(24, 1, 2, '2020-02-01', 1),
-(25, 1, 2, '2020-02-01', 1),
-(26, 1, 2, '2020-02-01', 1),
-(27, 1, 2, '2020-02-01', 1),
-(28, 1, 2, '2020-02-01', 1),
-(29, 1, 3, '2020-04-15', 1),
-(30, 1, 3, '2020-04-15', 1),
-(31, 1, 3, '2020-04-15', 1),
-(32, 1, 3, '2020-04-15', 1),
-(33, 1, 3, '2020-04-15', 1),
-(34, 1, 3, '2020-04-15', 1),
-(35, 1, 3, '2020-04-15', 1),
-(36, 1, 2, '2020-01-08', 3),
-(37, 1, 2, '2020-01-08', 3),
-(38, 1, 2, '2020-01-08', 3),
-(39, 1, 2, '2020-01-08', 3),
-(40, 1, 2, '2020-01-08', 3),
-(41, 3, 2, '2020-01-08', 3),
-(42, 3, 2, '2020-01-08', 3),
-(43, 3, 2, '2020-01-08', 3);
+INSERT INTO `item` (`id`, `warehouse_id`, `item_detail_id`, `added`, `order_id`, `status`) VALUES
+(4, 1, 1, '2020-02-01', NULL, 1),
+(5, 1, 2, '2020-02-01', NULL, 1),
+(6, 1, 3, '2020-04-15', NULL, 1),
+(7, 1, 2, '2020-01-08', NULL, 3),
+(8, 1, 1, '2020-02-01', NULL, 1),
+(9, 1, 1, '2020-02-01', NULL, 1),
+(10, 1, 1, '2020-02-01', NULL, 1),
+(11, 1, 1, '2020-02-01', NULL, 1),
+(12, 1, 1, '2020-02-01', NULL, 1),
+(13, 1, 1, '2020-02-01', NULL, 1),
+(14, 1, 1, '2020-02-01', NULL, 1),
+(15, 1, 1, '2020-02-01', NULL, 1),
+(16, 3, 1, '2020-02-01', NULL, 1),
+(17, 3, 1, '2020-02-01', NULL, 1),
+(18, 3, 1, '2020-02-01', NULL, 1),
+(19, 3, 1, '2020-02-01', NULL, 1),
+(20, 3, 2, '2020-02-01', NULL, 1),
+(21, 3, 2, '2020-02-01', NULL, 1),
+(22, 3, 2, '2020-02-01', NULL, 1),
+(23, 3, 2, '2020-02-01', NULL, 1),
+(24, 3, 2, '2020-02-01', NULL, 1),
+(25, 1, 2, '2020-02-01', NULL, 1),
+(26, 1, 2, '2020-02-01', NULL, 1),
+(27, 1, 2, '2020-02-01', NULL, 1),
+(28, 1, 2, '2020-02-01', NULL, 1),
+(29, 1, 3, '2020-04-15', NULL, 1),
+(30, 1, 3, '2020-04-15', NULL, 1),
+(31, 1, 3, '2020-04-15', NULL, 1),
+(32, 1, 3, '2020-04-15', NULL, 1),
+(33, 1, 3, '2020-04-15', NULL, 1),
+(34, 1, 3, '2020-04-15', NULL, 1),
+(35, 1, 3, '2020-04-15', NULL, 1),
+(36, 1, 2, '2020-01-08', NULL, 3),
+(37, 1, 2, '2020-01-08', NULL, 3),
+(38, 1, 2, '2020-01-08', NULL, 3),
+(39, 1, 2, '2020-01-08', NULL, 3),
+(40, 1, 2, '2020-01-08', NULL, 3),
+(41, 3, 2, '2020-01-08', NULL, 3),
+(42, 3, 2, '2020-01-08', NULL, 3),
+(43, 3, 2, '2020-01-08', NULL, 3),
+(44, 1, 1, '2020-05-04', 1, 2),
+(45, 1, 1, '2020-05-04', 1, 2),
+(46, 1, 1, '2020-05-04', 1, 2),
+(47, 1, 1, '2020-05-04', 1, 2),
+(48, 1, 1, '2020-05-04', 1, 2),
+(49, 1, 2, '2020-05-04', 1, 2),
+(50, 1, 2, '2020-05-04', 1, 2),
+(51, 1, 2, '2020-05-04', 1, 2),
+(52, 1, 2, '2020-05-04', 1, 2),
+(53, 1, 2, '2020-05-04', 1, 2),
+(54, 1, 3, '2020-05-04', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -182,6 +205,13 @@ CREATE TABLE `order` (
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Dumping data for table `order`
+--
+
+INSERT INTO `order` (`id`, `client_id`, `added`, `last_edited`, `note`, `status`) VALUES
+(1, 1, '2020-05-05 11:00:00', NULL, NULL, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -194,6 +224,15 @@ CREATE TABLE `order_has_item` (
   `item_id` int(11) NOT NULL,
   `amount` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `order_has_item`
+--
+
+INSERT INTO `order_has_item` (`id`, `order_id`, `item_id`, `amount`) VALUES
+(1, 1, 1, 5),
+(2, 1, 2, 5),
+(3, 1, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -243,7 +282,8 @@ ALTER TABLE `item`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id_UNIQUE` (`id`),
   ADD KEY `war_id` (`warehouse_id`),
-  ADD KEY `itd_id` (`item_detail_id`);
+  ADD KEY `itd_id` (`item_detail_id`),
+  ADD KEY `ord_id` (`order_id`);
 
 --
 -- Indexes for table `item_detail`
@@ -288,19 +328,19 @@ ALTER TABLE `warehouse`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `client`
 --
 ALTER TABLE `client`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `item_detail`
@@ -318,13 +358,13 @@ ALTER TABLE `manufacturer`
 -- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `order_has_item`
 --
 ALTER TABLE `order_has_item`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `warehouse`
