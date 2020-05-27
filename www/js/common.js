@@ -16,7 +16,18 @@ function Forms_fce() {
             if (data[name] !== undefined) {
                 switch($(v).prop("tagName")) {
                     case 'INPUT':
-                        $(v).val(data[name]);
+                        var type = $(v).attr('type');
+                        if (type === 'checkbox') {
+                            $(v).prop('checked', true);                            
+                        }
+                        else if (type === 'radio') {
+                            if ($(v).val() == data[name]) {
+                                $(v).prop('checked', true);                                
+                            }
+                        }
+                        else {
+                            $(v).val(data[name]);
+                        }
                         break;
                     case 'SELECT':
                         inst.set_select($(v), data[name]);
@@ -34,7 +45,24 @@ function Forms_fce() {
                 $(v).attr('selected', '');
             }            
         });
-
-    };        
+    };
+    
+    this.set_radio = function(domlist, value) {
+        $(domlist).prop('checked', false);
+        $(domlist).each(function(k, v) {
+            if ($(v).val() === value) {
+                $(v).prop('checked', true);
+            }
+        });
+    };
+    
+    this.set_checkboxes_by_array = function(domlist, namearray) {
+        $(domlist).prop('checked', false);
+        $(domlist).each(function(k, v) {
+            if (namearray.indexOf($(v).attr('name')) !== -1) {
+                $(v).prop('checked', true);                
+            }
+        });
+    };
 }
 

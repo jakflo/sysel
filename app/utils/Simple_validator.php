@@ -90,6 +90,13 @@ class Simple_validator {
         return $this;        
     }
     
+    public function in_array(array $array) {
+        if ($this->all_good) {            
+            $this->all_good = in_array($this->val, $array);            
+        }
+        return $this;                
+    }
+    
     // ověří, zda ve vstupním array jsou všechny hodnoty v klíčích $array_keys neprázdné
     // je-li $array_keys prázdný, ověří všechny hodnoty
     public function not_empty_in_array(array $array_keys = array()) {

@@ -51,11 +51,7 @@ class Env {
         $this->username = "root";
         $this->password = "12345";
         $this->dbname = "sysel";
-        $this->db = $this->connect_db($this->servername, $this->username, $this->password, $this->dbname);
-        
-        
-        
-       
+        $this->db = $this->connect_db($this->servername, $this->username, $this->password, $this->dbname);       
     }
     
     public function get_param(string $param_name) {
@@ -82,7 +78,6 @@ class Env {
     
     public function connect_db() {
         $db = new Db_wrap($this->servername, $this->username, $this->password, $this->dbname);
-        return $db;
-        
+        return $db;        
     }
 }

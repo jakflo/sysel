@@ -6,13 +6,14 @@
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 100%;
+  table-layout: fixed;
 }
 .w3_table td, .w3_table th {
   border: 1px solid #ddd;
   padding: 8px;
 }
 .w3_table tr:nth-child(even){background-color: #f2f2f2;}
-.w3_table tr:hover {background-color: #ddd;}
+.w3_table tr:hover, table.simple_borderless tr:hover {background-color: #ddd;}
 .w3_table th {
   padding-top: 12px;
   padding-bottom: 12px;
@@ -20,6 +21,14 @@
   background-color: #4CAF50;
   color: white;
 }
+
+table.simple_borderless {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;    
+}
+table.simple_borderless td, table.simple_borderless th {
+  padding: 8px;
+}
+
 
 p.error, ul.error li {
     color: red;
@@ -30,8 +39,16 @@ p.message {
     color: blue;
 }
 
-span.grey {
+.grey {
     color: grey;
+}
+
+.red {
+    color: red;
+}
+
+.green {
+    color: green;
 }
 
 div.strankovac {
@@ -49,3 +66,7 @@ button.marked {
     background: linear-gradient(to bottom, #99ff66 0%, #009900 100%);
 }
 
+ul.bez_znacek {
+    list-style-type:none;
+    padding-left: 5px;
+}

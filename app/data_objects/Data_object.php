@@ -17,16 +17,23 @@ abstract class Data_object {
      */
     protected $xss_protect_all_values = false;
     
+    /**     
+     * @var array
+     */
+    protected $source_array;
+
     protected $skip_these = array(
         'xss_protected_values', 
         'xss_protect_all_values', 
-        'skip_these'
+        'skip_these', 
+        'source_array'
         );
 
 
     public function load_array(array $array) {
         $xss_fix = new Xss_fix;
         $obj_props = array_keys(get_object_vars($this));
+        $this->source_array = $array;
         
         if ($this->xss_protect_all_values) {
             $array = $xss_fix->fix_array($array); 
@@ -51,5 +58,9 @@ abstract class Data_object {
             $result[] = $row_obj;            
         }
         return $result;        
+    }
+    
+    public function get_source_array() {
+        return $this->source_array;        
     }
 }

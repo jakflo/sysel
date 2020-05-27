@@ -40,6 +40,12 @@ class Sklady_model extends Models {
         return $vsechny_sklady;        
     }
     
+    public function get_prosty_seznam() {
+        $seznam_data_obj = new Seznam_skladu;
+        $seznam = $this->env->db->dotaz_vse("SELECT id, name FROM warehouse");
+        return $seznam_data_obj->load_2d_array($seznam);
+    }
+    
     public function zabrane_plochy_skladu(int $id = 0) {
         if ($id == 0) {
             $id_term = '';
@@ -56,6 +62,10 @@ class Sklady_model extends Models {
     
     public function pouzite_sklady() {
         return $this->env->db->dotaz_sloupec("select distinct warehouse_id from item", 'warehouse_id');        
+    }
+    
+    public function get_ids() {
+        return $this->env->db->dotaz_sloupec("SELECT id FROM warehouse", 'id');        
     }
     
     public function existuje_dle_id(int $id) {

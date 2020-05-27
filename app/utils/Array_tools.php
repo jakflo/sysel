@@ -8,12 +8,25 @@ class Array_tools {
     /*
      * prohledá 2d array a vrátí array, kde ve sloupcích $kde jsou hodoty $co;
      */
-    public function hledej_ve_vicepoli(array $input, $co, string $kde) {
+    public function hledej_ve_vicepoli(array $input, $co, string $kde, bool $zachovat_jmena_klicu = false) {
         $result = array();
-        foreach ($input as $row) {
+        foreach ($input as $key => $row) {
             if ($row[$kde] == $co) {
-                $result[] = $row;
+                if ($zachovat_jmena_klicu) {
+                    $result[$key] = $row;                    
+                }
+                else {
+                    $result[] = $row;
+                }
             }
+        }
+        return $result;
+    }
+    
+    public function hledej_ve_vicepoli_multi(array $input, array $asoc_term, bool $zachovat_jmena_klicu = false) {
+        $result = $input;
+        foreach ($asoc_term as $kde => $co) {
+            $result = $this->hledej_ve_vicepoli($result, $co, $kde, $zachovat_jmena_klicu);
         }
         return $result;
     }
@@ -32,6 +45,20 @@ class Array_tools {
     }
     
     /*
+     * jak vicepole_na_value_asoc, ale hodnoty se stejným názvem klíče sčítá dohromady
+     * tudíž hodnoty musí být čísla
+     */
+    public function vicepole_na_sum_asoc(array $input, string $klic, string $hodnota) {
+        $result = array();
+        foreach ($input as $row) {
+            if (isset($row[$klic])) {
+                $result[$row[$klic]] += $row[$hodnota];
+            }
+        }
+        return $result;        
+    }
+    
+    /*
      * převede vícepole na asoc. 2d pole, kde klíče jsou hodnoty sloupců $klic
      */
     public function vicepole_na_2d_asoc(array $input, string $klic) {
@@ -40,6 +67,18 @@ class Array_tools {
             if (isset($row[$klic])) {
                 $result[$row[$klic]] = $row;
             }
+        }
+        return $result;
+    }
+    
+    /*
+     * převede pole dataobjektů (potomci Data_object) na 2d asoc pole
+     * ACHTUNG!! vrací to pole NEošetřené na XSS
+     */
+    public function array_dataobjektu_na_2d_asoc(array $data_obj_array) {
+        $result = array();
+        foreach ($data_obj_array as $data_obj) {
+            $result[] = $data_obj->get_source_array();
         }
         return $result;
     }

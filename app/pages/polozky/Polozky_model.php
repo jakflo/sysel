@@ -3,6 +3,7 @@
 namespace Sysel\Pages\Polozky;
 use Sysel\Conf\Models;
 use Sysel\Data_objects\Seznam_polozek;
+use Sysel\Utils\Array_tools;
 
 class Polozky_model extends Models {
     public function zobraz_seznam() {
@@ -20,6 +21,18 @@ class Polozky_model extends Models {
         }
         $data_obj = new Seznam_polozek;
         return $data_obj->load_2d_array($seznam);        
+    }
+    
+    public function get_prosty_seznam(bool $return_asoc = false) {
+        $data_obj = new Seznam_polozek;
+        $items = $this->env->db->dotaz_vse("SELECT id, name FROM item_detail");
+        if ($return_asoc) {            
+            $array_tools = new Array_tools;            
+            return $array_tools->vicepole_na_value_asoc($items, 'id', 'name');            
+        }
+        else {
+            return $data_obj->load_2d_array($items);
+        }
     }
     
     public function rename(int $id, string $name) {
@@ -52,7 +65,11 @@ class Polozky_model extends Models {
     }
     
     public function get_pouzite_polozky() {
-        return $this->env->db->dotaz_sloupec("select distinct item_detail_id from item", 'item_detail_id');        
+        return $this->env->db->dotaz_sloupec("select distinct item_detail_id from item", 'item_detail_id');
+    }
+    
+    public function get_ids() {
+        return $this->env->db->dotaz_sloupec("SELECT id FROM item_detail", 'id');        
     }
     
     public function existuje_dle_id(int $id) {
