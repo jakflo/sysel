@@ -1,6 +1,11 @@
 <h1>Položky ve skladě</h1>
 <?if (!$this->detailne):?>
     <a href="<?=$this->webroot?>/polozky_ve_sklade/detailne"><button type="button">Detailně</button></a>
+    <?if ($this->pouze_volne):?>
+        <a href="<?=$this->webroot?>/polozky_ve_sklade"><button type="button">Zobrazit vše</button></a>
+    <?else:?>
+        <a href="<?=$this->webroot?>/polozky_ve_sklade/volne"><button type="button">Pouze volné položky</button></a>
+    <?endif?>    
     <?if ($this->brief_list):?>
         <div id="brief_item_list">
             <?foreach ($this->brief_list as $sklad_nm => $sklad_items):?>
@@ -8,7 +13,7 @@
                 <h4><?=$sklad_nm?></h4>
                 <table class="w3_table ware_list_brief_table">
                     <tr>
-                        <th>Název položky</th><th>Celkový počet</th>                        
+                        <th>Název položky</th><th>Celkový počet<?=$this->pouze_volne? ' (pouze volné položky)' : ''?></th>                        
                     </tr>
                     <?foreach ($sklad_items as $row):?>
                         <tr>

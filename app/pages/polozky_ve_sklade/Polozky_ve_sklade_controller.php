@@ -36,7 +36,8 @@ class Polozky_ve_sklade_controller extends Controllers {
             $this->form_save = base64_encode(json_encode($get));
         }
         else {
-            $this->brief_list = $model->zobraz_brief();
+            $this->pouze_volne = $this->params[0] == 'volne';
+            $this->brief_list = $model->zobraz_brief($this->pouze_volne);
             $this->detailne = false;            
         }        
         require "{$this->folder}/polozky_ve_sklade.php";                

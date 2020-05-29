@@ -26,14 +26,15 @@ class Polozky_ve_sklade_model extends Models {
         $this->filtred_list = new Seznam_s_filtry($env);                
     }
     
-    public function zobraz_brief() {
+    public function zobraz_brief(bool $pouze_volne) {
         $array_tools = new Array_tools;
-        $data_brief = new Polozky_brief; 
+        $data_brief = new Polozky_brief;
+        $status_term = $pouze_volne? '1' : '1,2';
         $all_wars = $this->env->db->dotaz_vse(
                 "select w.name as w_name, ide.name as it_name, count(ide.id) as pocet 
                 from item i join item_detail ide on i.item_detail_id=ide.id 
                 join warehouse w on i.warehouse_id=w.id 
-                where i.status in(1,2) group by i.item_detail_id, i.warehouse_id 
+                where i.status in({$status_term}) group by i.item_detail_id, i.warehouse_id 
                 order by warehouse_id, i.item_detail_id"
                 );
         if ($all_wars) {
