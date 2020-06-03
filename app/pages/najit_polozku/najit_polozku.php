@@ -32,7 +32,11 @@
     <input type="submit" name="sent" value="Hledat">
 </form>
     
-<?require_once $this->env->get_param('root').'/pages/najit_polozku/nalezene_polozky.php'?>
+<?
+    if (!empty($this->search_result)) {
+        require_once $this->env->get_param('root').'/pages/najit_polozku/nalezene_polozky.php';
+    }
+?>
 
 <div class="hidden" id="saved_form"><?=$this->saved_form?></div>
 <div class="hidden" id="saved_ware_list"><?=$this->saved_ware_list?></div>
