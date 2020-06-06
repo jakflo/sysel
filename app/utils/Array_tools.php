@@ -124,4 +124,11 @@ class Array_tools {
         }
         return implode('&', $out);
     }
+    
+    public function trim_values(array $input) {
+        foreach ($input as $k => &$val) {
+            $val = trim($val);
+        }
+        return $input;        
+    }
 }

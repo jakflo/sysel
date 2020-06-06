@@ -3,6 +3,7 @@
 namespace Sysel\Pages\Polozky_ve_sklade;
 use Sysel\Conf\Models;
 use Sysel\Utils\Array_tools;
+use Sysel\Utils\Protected_in;
 use Sysel\Pages\Polozky_ve_sklade\Seznam_s_filtry;
 use Sysel\Data_objects\Polozky_brief;
 use Sysel\Utils\Strankovac;
@@ -10,6 +11,8 @@ use Sysel\Utils\Date_tools;
 use Sysel\Data_objects\Polozky_full;
 use Sysel\Utils\Simple_validator;
 use Exception;
+use Sysel\conf\Exceptions\Polozky_ve_sklade_exception;
+use Sysel\Pages\Sklady\Sklady_model;
 
 class Polozky_ve_sklade_model extends Models {
     
@@ -31,14 +34,14 @@ class Polozky_ve_sklade_model extends Models {
         $data_brief = new Polozky_brief;
         $status_term = $pouze_volne? '1' : '1,2';
         $all_wars = $this->env->db->dotaz_vse(
-                "select w.name as w_name, ide.name as it_name, count(ide.id) as pocet 
+                "select w.id as w_id, w.name as w_name, ide.name as it_name, count(ide.id) as pocet 
                 from item i join item_detail ide on i.item_detail_id=ide.id 
                 join warehouse w on i.warehouse_id=w.id 
                 where i.status in({$status_term}) group by i.item_detail_id, i.warehouse_id 
                 order by warehouse_id, i.item_detail_id"
                 );
         if ($all_wars) {
-            $uzite_sklady = array_column($all_wars, 'w_name');
+            $uzite_sklady = array_unique(array_column($all_wars, 'w_name'));
             $result = array();
             foreach ($uzite_sklady as $sklad) {
                 $result[$sklad] = $data_brief->load_2d_array($array_tools->hledej_ve_vicepoli($all_wars, $sklad, 'w_name'));
@@ -48,6 +51,40 @@ class Polozky_ve_sklade_model extends Models {
         else {
             return false;
         }                
+    }
+    
+    public function maximalne_polozek_na_sklad(int $ware_id, int $item_id) {
+        $array_tools = new Array_tools;
+        $sklady = new Sklady_model($this->env);
+        $sklady_all = $array_tools->array_dataobjektu_na_2d_asoc($sklady->zobraz_sklady());
+        $sklad = $array_tools->hledej_ve_vicepoli($sklady_all, $ware_id, 'id');
+        if (count($sklad) == 0) {
+            throw new Polozky_ve_sklade_exception('neznamy sklad', 1);
+        }
+        $volna_kapacita = $sklad[0]['area_left'];
+        $item_plocha = $this->env->db->dotaz_hodnota(
+                "SELECT area FROM item_detail where id=:it_id", array(':it_id' => $item_id)
+                );
+        if ($item_plocha === false) {
+            throw new Polozky_ve_sklade_exception('neznama polozka', 2);
+        }
+        return intval(floor($volna_kapacita / $item_plocha));
+    }
+    
+    public function pridat_polozky(int $w_id, int $it_id, int $amount) {        
+        $output = array();
+        $prot_in = new Protected_in;
+        $row_data = array($w_id, $it_id, date('Y-m-d'), 1);
+        for ($c  = 1; $c <= $amount; $c++) {
+            $token = "t{$c}_";
+            $prot_in->add_array($token, $row_data);
+            $output[] = "({$prot_in->get_tokens($token)})";            
+        }
+        $output_str = implode(',', $output);
+        $this->env->db->sendSQL(
+                "insert into item(warehouse_id, item_detail_id, added, status) values {$output_str}", 
+                        $prot_in->get_data()
+                        );
     }
     
     public function sanitize_get($get) {

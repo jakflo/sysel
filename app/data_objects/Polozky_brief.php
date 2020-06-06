@@ -7,7 +7,7 @@ class Polozky_brief extends Data_object {
      *
      * @var int
      */
-    public $pocet;
+    public $w_id, $pocet;
     
     /**
      *

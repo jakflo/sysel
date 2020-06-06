@@ -64,6 +64,20 @@ class Sklady_model extends Models {
         return $this->env->db->dotaz_sloupec("select distinct warehouse_id from item", 'warehouse_id');        
     }
     
+    public function get_volne_sklady() {
+        $array_tools = new Array_tools;
+        $volne = $this->env->db->dotaz_vse(
+                "SELECT id, name FROM warehouse where id not in({$array_tools->implode_pro_in($this->pouzite_sklady())})"
+                );
+        if (!$volne) {
+            return false;
+        }
+        else {
+            $data_obj = new Seznam_skladu;            
+            return $data_obj->load_2d_array($volne);
+        }
+    }
+    
     public function get_ids() {
         return $this->env->db->dotaz_sloupec("SELECT id FROM warehouse", 'id');        
     }

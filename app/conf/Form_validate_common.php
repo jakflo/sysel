@@ -7,12 +7,17 @@ use Sysel\Utils\Xss_fix;
 
 /**
  * obsahuje pár společných metod pro jednotlivé validátory formulářů
- * $model je model daného MVC obsahující 
+ * $model je model daného MVC obsahující metodu existuje_dle_id
  */
 abstract class Form_validate_common {    
     protected $model;
-    
+    protected $got_error = false;
+
     public function __construct($model) {
+        $this->set_model($model);        
+    }
+    
+    public function set_model($model) {
         $this->model = $model;        
     }
     
@@ -51,4 +56,8 @@ abstract class Form_validate_common {
         return $error;
     }
     
+    public function validate_positive_int($int) {
+        $int = new Simple_validator($int);                
+        return $int->is_int()->greater_than(0, true)->get_result();        
+    }    
 }
