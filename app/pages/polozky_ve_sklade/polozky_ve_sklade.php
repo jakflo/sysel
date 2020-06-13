@@ -106,12 +106,12 @@
                 <table class="w3_table">
                     <tr>
                         <th>Položka č.</th>
-                        <th>Název skladu <?=$this->get_order_by_butts('w.name')?></th>
-                        <th>Název položky <?=$this->get_order_by_butts('ide.name')?></th>
-                        <th>Přidáno <?=$this->get_order_by_butts('i.added')?></th>
+                        <th>Název skladu <?=$this->get_order_by_butts->get_html('w.name')?></th>
+                        <th>Název položky <?=$this->get_order_by_butts->get_html('ide.name')?></th>
+                        <th>Přidáno <?=$this->get_order_by_butts->get_html('i.added')?></th>
                         <th>Status položky</th>
-                        <th>Č. objednávky <?=$this->get_order_by_butts('i.order_id')?></th>
-                        <th>Zákazník <?=$this->get_order_by_butts('comb_name')?></th>
+                        <th>Č. objednávky <?=$this->get_order_by_butts->get_html('i.order_id')?></th>
+                        <th>Zákazník <?=$this->get_order_by_butts->get_html('comb_name')?></th>
                         <th></th>
                     </tr>
                     <tr>

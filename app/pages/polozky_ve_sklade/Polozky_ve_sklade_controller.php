@@ -8,6 +8,7 @@ use Sysel\Pages\Sklady\Sklady_model;
 use Sysel\Pages\Polozky_ve_sklade\Add_item_validate;
 use Sysel\Utils\Strankovac;
 use Sysel\Utils\Array_tools;
+use Sysel\Pages\Polozky_ve_sklade\Get_order_by_butts;
 
 class Polozky_ve_sklade_controller extends Controllers {
     protected $page_title = 'Syslův sklad | Položky ve skladě';
@@ -21,6 +22,7 @@ class Polozky_ve_sklade_controller extends Controllers {
             $get = $model->sanitize_get($_GET);
             $this->page = $get['page'];
             $this->order_by = $get['order_by'];
+            $this->get_order_by_butts = new Get_order_by_butts($this->order_by);
             $this->pocet_zaznamu = $model->get_pocet_zaznamu($get);
             if ($this->pocet_zaznamu > 0) {
                 $strankovac = new Strankovac($this->pocet_zaznamu, $rows_per_page, $this->page);
@@ -78,13 +80,5 @@ class Polozky_ve_sklade_controller extends Controllers {
         }
         
         require "{$this->folder}/polozky_ve_sklade.php";                
-    }
-    
-    public function get_order_by_butts(string $field_nm) {
-        $marked_asc = $this->order_by == "{$field_nm} asc"? ' marked':'';
-        $marked_desc = $this->order_by == "{$field_nm} desc"? ' marked':'';        
-        $html = "<button class='order_by_button{$marked_asc}' type='button' data-name='{$field_nm} asc'>▲</button>";
-        $html .= "<button class='order_by_button{$marked_desc}' type='button' data-name='{$field_nm} desc'>▼</button>";        
-        return $html;
-    }
+    }    
 }

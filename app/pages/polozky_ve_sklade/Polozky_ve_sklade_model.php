@@ -13,6 +13,7 @@ use Sysel\Utils\Simple_validator;
 use Exception;
 use Sysel\conf\Exceptions\Polozky_ve_sklade_exception;
 use Sysel\Pages\Sklady\Sklady_model;
+use Sysel\Pages\Polozky_ve_sklade\Validate_order_by;
 
 class Polozky_ve_sklade_model extends Models {
     
@@ -88,6 +89,7 @@ class Polozky_ve_sklade_model extends Models {
     }
     
     public function sanitize_get($get) {
+        $validate_order_by = new Validate_order_by(array('w.name', 'ide.name', 'i.added', 'i.order_id', 'comb_name'));
         foreach ($get as $k => &$v) {
             $v = trim($v);
             if (empty($v)) {
@@ -115,15 +117,12 @@ class Polozky_ve_sklade_model extends Models {
                         unset($get['status']);
                     }
                     break;
-                case 'order_by':
-                    $order_by_part = explode(' ', $v);
-                    $allowed_1 = array('w.name', 'ide.name', 'i.added', 'i.order_id', 'comb_name');
-                    $allowed_2 = array('asc', 'desc');
-                    if (!in_array($order_by_part[0], $allowed_1) or !in_array($order_by_part[1], $allowed_2)) {
+                case 'order_by':                    
+                    if (!$validate_order_by->validate($v)) {
                         $v = 'i.added desc';
                     }
                     break;
-            }            
+            }
         }
         $get['order_by'] = empty($get['order_by'])? 'i.added desc':$get['order_by'];
         return $get;        
@@ -148,7 +147,7 @@ class Polozky_ve_sklade_model extends Models {
         $dates = new Date_tools;
         $array_tools = new Array_tools;
         $data = new Polozky_full;
-        $rows = $this->filtred_list->get_rows($page);
+        $rows = $this->filtred_list->get_rows($page, 'i.id');
         $rows = $array_tools->null_na_empty_string_vicepole($rows);
         foreach ($rows as &$r) {
             $r['added'] = $dates->en_date_na_cz($r['added']);

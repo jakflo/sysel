@@ -37,14 +37,14 @@ abstract class Filtered_list extends Models {
         return $this->env->db->dotaz_hodnota($this->count_sql, $this->params);       
     }
     
-    public function get_rows(Strankovac $page) {
+    public function get_rows(Strankovac $page, string $key_id_term) {
         $params = $this->params;
         foreach ($this->params_where_keys as $k) {
             unset($params[$k]);            
         }
         $array_tools = new Array_tools;
         $ids = $this->get_ids($page);
-        $sql = "{$this->final_sql} where i.id in({$array_tools->implode_pro_in($ids)}) {$this->order_by}";
+        $sql = "{$this->final_sql} where {$key_id_term} in({$array_tools->implode_pro_in($ids)}) {$this->order_by}";
         return $this->env->db->dotaz_vse($sql, $params);        
     }
     

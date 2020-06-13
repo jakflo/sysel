@@ -47,7 +47,7 @@
 </table>
 
 <h4>Vytvořit novou položku</h4>
-<?if (count($this->errors_bott) != 0):?>
+<?if (isset($this->errors_bott) and count($this->errors_bott) != 0):?>
     <ul class="error">
         <?foreach ($this->errors_bott as $error):?>
             <li><?=$error?></li>
