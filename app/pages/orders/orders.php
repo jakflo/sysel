@@ -1,4 +1,5 @@
 <h1>Seznam objednávek</h1>
+<?=$this->get_session_msg('top_msg', 'message')?>
 <h4>Nalezeno <?=$this->pocet_zaznamu?> objednávek.</h4>
 
 <form method="get" id="orders_list_filter">
@@ -57,7 +58,7 @@
                 <td>
                     <?=$row->status_name?>
                     <?if ($row->status == 1):?>
-                        <a href="<?=$this->webroot?>/najit_polozku?ord_id=<?=$row->id?>"><button type="button">Najít položky</button></a>
+                        <a href="<?=$this->webroot?>/order_search_item/<?=$row->id?>"><button type="button">Najít položky</button></a>
                     <?endif?>
                 </td>
                 <td></td>

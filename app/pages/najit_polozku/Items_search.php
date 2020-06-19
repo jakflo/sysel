@@ -24,7 +24,7 @@ class Items_search {
     /**     
      * @var Ware_has_all_items
      */
-    protected $ware_has_all_items;
+    protected $ware_has_all_items, $ware_has_some_items;
     
     /**
      * @var Missing_item 
@@ -63,6 +63,7 @@ class Items_search {
                 $in_terms->get_data()
                 );
         $this->ware_has_all_items = new Ware_has_all_items($this);
+        $this->ware_has_some_items = new Ware_has_all_items($this);
     }
     
     public function search_item(int $id, int $amount) {
@@ -100,6 +101,10 @@ class Items_search {
         return $this->polozky_ve_skladech;        
     }
     
+    public function get_nic_nebylo_nalezeno() {
+        return !is_array($this->polozky_ve_skladech);
+    }
+    
     public function kolik_je_polozky_pozadovano(int $item_id) {
         return $this->pozadovane_items[$item_id];
     }
@@ -110,5 +115,9 @@ class Items_search {
     
     public function get_sklady_kde_je_vse_hledane() {
         return $this->ware_has_all_items->get_ware_list();        
+    }
+    
+    public function get_sklady_kde_je_alespon_1_hledana_polozka() {
+        return $this->ware_has_some_items->get_ware_list();
     }
 }

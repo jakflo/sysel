@@ -2,6 +2,7 @@
 
 namespace Sysel\Conf;
 use Sysel\Conf\Router;
+use Sysel\Pages\Error\Error_controller;
 
 abstract class Controllers {
     
@@ -35,7 +36,7 @@ abstract class Controllers {
      */
     protected $webroot, $error_page;
     
-    public function __construct(Env $env, string $folder ,array $params) {
+    public function __construct(Env $env, string $folder, array $params) {
         $this->env = $env;
         $this->folder = $folder;
         $this->params = $params;
@@ -51,10 +52,25 @@ abstract class Controllers {
         return $this->webroot;        
     }
     
+    public function get_error_controller() {
+        return new Error_controller($this->env, $this->env->get_param('root').'/pages/error', array());
+    }
+        
+    public function get_session_msg(string $msg_name, string $class_nm) {
+        if (isset($_SESSION[$msg_name])) {
+            $msg = "<p class='{$class_nm}'>{$_SESSION[$msg_name]}</p>";
+            unset($_SESSION[$msg_name]);
+        }
+        else {
+            $msg = '';
+        }
+        return $msg;
+    }
+    
     public function reload() {
         $router = new Router($this->env);
         $parsed = $router->parse($_SERVER['REQUEST_URI']);
-        $page_nm = trim($parsed[0]);
+        $page_nm = implode('/', $parsed);
         echo "<script>window.location.replace('{$this->webroot}/{$page_nm}')</script>";
         exit();
     }

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 14, 2020 at 10:31 PM
+-- Generation Time: Jun 19, 2020 at 07:24 PM
 -- Server version: 5.7.17-log
--- PHP Version: 7.1.2
+-- PHP Version: 7.3.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -44,7 +44,8 @@ CREATE TABLE `address` (
 INSERT INTO `address` (`id`, `street`, `city`, `country`) VALUES
 (1, ' Elphinstone Road 304', 'Mumbai', 'India'),
 (2, '6611 Zuni Rd SE', 'Albuquerque', 'USA'),
-(3, 'Mostní 11', 'Most', 'Czech');
+(3, 'Mostní 11', 'Most', 'Czech'),
+(4, 'Zahradní 20', 'Liberec', 'Czech');
 
 -- --------------------------------------------------------
 
@@ -71,7 +72,8 @@ CREATE TABLE `client` (
 --
 
 INSERT INTO `client` (`id`, `company_name`, `forname`, `surname`, `middlename`, `title`, `email`, `phone`, `address_id`, `added`, `note`) VALUES
-(1, NULL, 'Dan', 'Šroubek', NULL, NULL, 'dšr@mail.cz', '800000000', 3, '2020-05-05', NULL);
+(1, NULL, 'Dan', 'Šroubek', NULL, NULL, 'dšr@mail.cz', '800000000', 3, '2020-05-05', NULL),
+(2, NULL, 'Ujo', 'Pompo', NULL, NULL, 'pom@rumbco.cz', '700000000', 4, '2020-06-10', NULL);
 
 -- --------------------------------------------------------
 
@@ -143,7 +145,78 @@ INSERT INTO `item` (`id`, `warehouse_id`, `item_detail_id`, `added`, `order_id`,
 (51, 1, 2, '2020-05-04', 1, 2),
 (52, 1, 2, '2020-05-04', 1, 2),
 (53, 1, 2, '2020-05-04', 1, 2),
-(54, 1, 3, '2020-05-04', 1, 2);
+(54, 1, 3, '2020-05-04', 1, 2),
+(55, 3, 1, '2020-06-06', NULL, 1),
+(56, 3, 1, '2020-06-06', NULL, 1),
+(57, 3, 1, '2020-06-06', NULL, 1),
+(58, 3, 1, '2020-06-06', NULL, 1),
+(59, 3, 1, '2020-06-06', NULL, 1),
+(60, 3, 1, '2020-06-06', NULL, 1),
+(61, 3, 2, '2020-06-06', NULL, 1),
+(62, 3, 2, '2020-06-06', NULL, 1),
+(63, 3, 2, '2020-06-06', NULL, 1),
+(64, 3, 2, '2020-06-06', NULL, 1),
+(65, 3, 2, '2020-06-06', NULL, 1),
+(66, 1, 4, '2020-06-10', NULL, 1),
+(67, 1, 4, '2020-06-10', NULL, 1),
+(68, 1, 4, '2020-06-10', NULL, 1),
+(69, 1, 4, '2020-06-10', NULL, 1),
+(70, 1, 4, '2020-06-10', NULL, 1),
+(71, 1, 4, '2020-06-10', NULL, 1),
+(72, 1, 4, '2020-06-10', NULL, 1),
+(73, 1, 4, '2020-06-10', NULL, 1),
+(74, 1, 4, '2020-06-10', NULL, 1),
+(75, 1, 4, '2020-06-10', NULL, 1),
+(76, 1, 5, '2020-06-10', NULL, 1),
+(77, 1, 5, '2020-06-10', NULL, 1),
+(78, 1, 5, '2020-06-10', NULL, 1),
+(79, 1, 5, '2020-06-10', NULL, 1),
+(80, 1, 5, '2020-06-10', NULL, 1),
+(81, 1, 5, '2020-06-10', NULL, 1),
+(82, 1, 5, '2020-06-10', NULL, 1),
+(83, 1, 5, '2020-06-10', NULL, 1),
+(84, 1, 5, '2020-06-10', NULL, 1),
+(85, 1, 5, '2020-06-10', NULL, 1),
+(86, 1, 5, '2020-06-10', NULL, 1),
+(87, 1, 5, '2020-06-10', NULL, 1),
+(88, 1, 5, '2020-06-10', NULL, 1),
+(89, 1, 5, '2020-06-10', NULL, 1),
+(90, 1, 5, '2020-06-10', NULL, 1),
+(91, 1, 5, '2020-06-10', NULL, 1),
+(92, 1, 5, '2020-06-10', NULL, 1),
+(93, 1, 5, '2020-06-10', NULL, 1),
+(94, 1, 5, '2020-06-10', NULL, 1),
+(95, 1, 5, '2020-06-10', NULL, 1),
+(96, 1, 5, '2020-06-10', NULL, 1),
+(97, 1, 5, '2020-06-10', NULL, 1),
+(98, 1, 5, '2020-06-10', NULL, 1),
+(99, 1, 5, '2020-06-10', NULL, 1),
+(100, 1, 5, '2020-06-10', NULL, 1),
+(101, 1, 5, '2020-06-10', NULL, 1),
+(102, 1, 5, '2020-06-10', NULL, 1),
+(103, 1, 5, '2020-06-10', NULL, 1),
+(104, 1, 5, '2020-06-10', NULL, 1),
+(105, 1, 5, '2020-06-10', NULL, 1),
+(106, 3, 4, '2020-06-10', NULL, 1),
+(107, 3, 4, '2020-06-10', NULL, 1),
+(108, 3, 4, '2020-06-10', NULL, 1),
+(109, 3, 4, '2020-06-10', NULL, 1),
+(110, 3, 4, '2020-06-10', NULL, 1),
+(111, 3, 5, '2020-06-10', NULL, 1),
+(112, 3, 5, '2020-06-10', NULL, 1),
+(113, 3, 5, '2020-06-10', NULL, 1),
+(114, 3, 5, '2020-06-10', NULL, 1),
+(115, 3, 5, '2020-06-10', NULL, 1),
+(116, 3, 5, '2020-06-10', NULL, 1),
+(117, 3, 5, '2020-06-10', NULL, 1),
+(118, 3, 5, '2020-06-10', NULL, 1),
+(119, 3, 5, '2020-06-10', NULL, 1),
+(120, 3, 5, '2020-06-10', NULL, 1),
+(121, 3, 5, '2020-06-10', NULL, 1),
+(122, 3, 5, '2020-06-10', NULL, 1),
+(123, 3, 5, '2020-06-10', NULL, 1),
+(124, 3, 5, '2020-06-10', NULL, 1),
+(125, 3, 5, '2020-06-10', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -166,7 +239,9 @@ INSERT INTO `item_detail` (`id`, `name`, `area`, `manufacturer_id`) VALUES
 (1, 'šrouby m5x15 200 ks', 0.5, 1),
 (2, 'matky m5 hex 200 ks', 0.5, 1),
 (3, 'úhelník 100x20x2 100 ks', 20, 1),
-(4, 'pracovní rukacice M 20 ks', 4, 2);
+(4, 'pracovní rukacice M 20 ks', 4, 2),
+(5, 'Rýč 1 ks', 1, 1),
+(6, 'Rozvodový řemen 1 ks', 0.3, 2);
 
 -- --------------------------------------------------------
 
@@ -210,7 +285,8 @@ CREATE TABLE `order` (
 --
 
 INSERT INTO `order` (`id`, `client_id`, `added`, `last_edited`, `note`, `status`) VALUES
-(1, 1, '2020-05-05 11:00:00', NULL, NULL, 2);
+(1, 1, '2020-05-05 11:00:00', NULL, NULL, 2),
+(2, 2, '2020-06-10 07:00:00', '2020-06-10 11:00:00', 'spěchá', 1);
 
 -- --------------------------------------------------------
 
@@ -232,7 +308,9 @@ CREATE TABLE `order_has_item` (
 INSERT INTO `order_has_item` (`id`, `order_id`, `item_id`, `amount`) VALUES
 (1, 1, 1, 5),
 (2, 1, 2, 5),
-(3, 1, 3, 1);
+(3, 1, 3, 1),
+(4, 2, 4, 3),
+(5, 2, 5, 10);
 
 -- --------------------------------------------------------
 
@@ -328,25 +406,25 @@ ALTER TABLE `warehouse`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `client`
 --
 ALTER TABLE `client`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `item`
 --
 ALTER TABLE `item`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
 -- AUTO_INCREMENT for table `item_detail`
 --
 ALTER TABLE `item_detail`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `manufacturer`
@@ -358,13 +436,13 @@ ALTER TABLE `manufacturer`
 -- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `order_has_item`
 --
 ALTER TABLE `order_has_item`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `warehouse`
