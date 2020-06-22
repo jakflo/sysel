@@ -27,6 +27,7 @@ table.simple_borderless {
 }
 table.simple_borderless td, table.simple_borderless th {
   padding: 8px;
+  text-align: left;
 }
 
 
