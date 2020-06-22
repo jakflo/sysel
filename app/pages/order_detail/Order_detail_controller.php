@@ -2,28 +2,38 @@
 
 namespace Sysel\Pages\Order_detail;
 use Sysel\Conf\Controllers;
-use Sysel\conf\Exceptions\Controller_exception;
-use Sysel\Utils\Simple_validator;
+use Sysel\Pages\Order_detail\Order_detail_model;
+use Sysel\Utils\Xss_fix;
+use Sysel\conf\Exceptions\Order_exception;
 
 class Order_detail_controller extends Controllers {
     protected $page_title = 'Syslův sklad | Detail objednávky';
     
     /**
-     *
      * @var int
      */
     protected $order_id;
 
 
     public function zobraz() {
-        $validator = new Simple_validator($this->params[0]);        
-        if ($validator->is_int()->greater_than(0, true)->get_result()) {
-            $this->order_id = $this->params[0];
+        $xss = new Xss_fix;
+        $order_id = trim($this->params[0]);        
+        $this->order_id = $xss->fix_string($order_id);
+        try {
+            $model = new Order_detail_model($this->env, $order_id);
         }
-        else {
-            throw new Controller_exception('Neplatné číslo objednávky');            
-        }
-        
+         catch (Order_exception $e) {
+             if ($e->getCode() == 1) {
+                 $error = $this->get_error_controller()->set_msg('Objednávka nenalezena')->zobraz();
+                 exit();
+             }
+             else {
+                 throw $e;
+             }
+         }
+         $this->basic_nfo = $model->get_order_detail();
+         $this->client_nfo = $model->get_client_detail();
+         $this->items = $model->get_items();
         
         require "{$this->folder}/order_detail.php";                
     }

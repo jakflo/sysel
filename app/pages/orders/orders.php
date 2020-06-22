@@ -61,7 +61,9 @@
                         <a href="<?=$this->webroot?>/order_search_item/<?=$row->id?>"><button type="button">Najít položky</button></a>
                     <?endif?>
                 </td>
-                <td></td>
+                <td>
+                    <a href="<?=$this->webroot?>/order_detail/<?=$row->id?>"><button type="button">Detail</button></a>
+                </td>
             </tr>                
         <?endforeach?>
     </table>

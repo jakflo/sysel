@@ -34,6 +34,7 @@
     <h3>Žádna položka nebyla nalezena!</h3>
 <?endif?>
 <br />
+<a href="<?=$this->get_webroot()?>/order_detail/<?=$this->order_id?>"><button type="button">Detail objednávky</button></a>
 <a href="<?=$this->get_webroot()?>"><button type="button">Domů</button></a>
 
 <script src="<?=$this->webroot?>/js/order_search_item.js"></script>

@@ -18,6 +18,7 @@ class Error_controller extends Controllers {
     
     public function set_msg(string $msg) {
         $xss = new Xss_fix;
-        $this->error_msg = $xss->fix_string($msg);        
+        $this->error_msg = $xss->fix_string($msg);
+        return $this;
     }
 }
