@@ -1,27 +1,44 @@
 <h1>Detail objednávky</h1>
 
 <h2>Základní informace</h2>
+<?=$this->get_session_msg('error', 'error')?>
+<?=$this->get_session_msg('message', 'message')?>
 <div id="basic_nfo">
-    <table class="simple_borderless">
-        <tr>
-            <th>Č. objednávky</th>
-            <td><?=$this->order_id?></td>
-        </tr>
-        <tr>
-            <th>Přidáno</th>
-            <td><?=$this->basic_nfo->added?></td>
-        </tr>
-        <tr>
-            <th>Status</th>
-            <td><?=$this->basic_nfo->status_name?></td>
-        </tr>
-        <?if (!empty($this->basic_nfo->note)):?>
+    <form method="post">
+        <table class="simple_borderless">
             <tr>
-                <th>Poznámka</th>
-                <td><?=$this->basic_nfo->note?></td>
+                <th>Č. objednávky</th>
+                <td><?=$this->order_id?></td>
             </tr>
-        <?endif?>
-    </table>
+            <tr>
+                <th>Přidáno</th>
+                <td><?=$this->basic_nfo->added?></td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>
+                    <?if ($this->basic_nfo->status_is_select):?>
+                        <select name="status" id="status_select">
+                            <?foreach ($this->basic_nfo->status_select as $s_id => $s_nm):?>
+                                <option value="<?=$s_id?>"><?=$s_nm?></option>
+                            <?endforeach?>
+                        </select>
+                    <input id="subm_stat_change" type="submit" name="change_stat" value="Změnit" disabled="">
+                    <?else:?>
+                        <?=$this->basic_nfo->status_name?>            
+                    <?endif?>
+                    <input type="hidden" name="status_is_select" value="<?=$this->basic_nfo->status_is_select? 1:0?>">
+                    <input id="old_status" type="hidden" name="old_status" value="<?=$this->basic_nfo->status?>">
+                </td>
+            </tr>
+            <?if (!empty($this->basic_nfo->note)):?>
+                <tr>
+                    <th>Poznámka</th>
+                    <td><?=$this->basic_nfo->note?></td>
+                </tr>
+            <?endif?>
+        </table>
+    </form>
 </div>
 
 <h2>Informace o klientovy</h2>
@@ -79,3 +96,4 @@
     <?endif?>
     <a href="<?=$this->get_webroot()?>"><button type="button">Domů</button></a>
 </div>
+<script src="<?=$this->webroot?>/js/order_detail.js"></script>

@@ -10,6 +10,16 @@ class Orders extends Data_object{
     public $id, $status;
     
     /**
+     * @var bool
+     */
+    public $status_is_select;
+    
+    /**
+     * @var array
+     */
+    public $status_select;
+
+    /**
      * date
      */
     public $added, $last_edited;

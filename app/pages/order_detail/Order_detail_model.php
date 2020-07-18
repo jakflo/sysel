@@ -10,12 +10,13 @@ use Sysel\Data_objects\Client;
 use Sysel\Data_objects\Polozky_brief;
 use Sysel\Utils\Array_tools;
 use Sysel\Utils\Date_tools;
+use Exception;
 
 class Order_detail_model extends Models {
     /**
      * @var int
      */
-    protected $order_id, $client_id;
+    protected $order_id, $client_id, $status;
     
     /**
      * @var array
@@ -35,7 +36,8 @@ class Order_detail_model extends Models {
         if (!$this->basic_info) {
             throw new Order_exception('Objednavka nenalezena', 1);
         }
-        $this->client_id = $this->basic_info['client_id'];        
+        $this->client_id = $this->basic_info['client_id'];
+        $this->status = $this->basic_info['status'];
     }
     
     public function get_order_detail() {
@@ -43,8 +45,14 @@ class Order_detail_model extends Models {
         $date_tools = new Date_tools;
         $ord_model = new Orders_model($this->env);
         $basic_info = $array_tools->null_na_empty_string($this->basic_info);
-        $basic_info['added'] = $date_tools->en_datetime_na_cz($basic_info['added']);        
-        $basic_info['status_name'] = $ord_model->get_status_name($basic_info['status']);        
+        $basic_info['added'] = $date_tools->en_datetime_na_cz($basic_info['added']);
+        $basic_info['status_is_select'] = is_array($ord_model->get_permited_status_changes($this->status));
+        if ($basic_info['status_is_select']) {
+            $basic_info['status_select'] = $ord_model->get_status_changes_select($this->status);
+        }
+        else {
+            $basic_info['status_name'] = $ord_model->get_status_name($this->status);
+        }
         $data_obj = new Orders;
         $data_obj->load_array($basic_info);
         return $data_obj;        
@@ -71,5 +79,45 @@ class Order_detail_model extends Models {
         $data_obj = new Polozky_brief;
         $data_obj = $data_obj->load_2d_array($items);
         return $data_obj;
+    }
+    
+    public function get_status() {
+        return $this->status;
+    }
+    
+    public function validate_status_change($status) {
+        $ord_model = new Orders_model($this->env);
+        return in_array($status, $ord_model->get_permited_status_changes($this->status));
+    }
+    
+    public function change_status(int $status) {
+        $item_status = $this->order_status_to_items_status($status);
+        if ($item_status != $this->order_status_to_items_status($this->status)) {
+            $order_term = $item_status == 1? ', order_id=null' : '';
+            $this->env->db->sendSQL(
+                    "update item set status=:stat {$order_term} where order_id=:o_id and status!=4", 
+                    array(':stat' => $item_status, ':o_id' => $this->order_id)
+                    );
+        }
+        $this->env->db->sendSQL(
+                "update `order` set status=:status, last_edited=:now where id=:o_id", 
+                array(':status' => $status, ':now' => date('Y-m-d H:i:s'), ':o_id' => $this->order_id)
+                );        
+    }
+    
+    public function order_status_to_items_status(int $status) {
+        switch ($status) {
+            case 1:
+            case 6:
+                return 1;
+            case 2:
+            case 3:
+                return $status;
+            case 4:
+            case 5:
+                return 4;
+            default:
+                throw new Exception('Neznamy typ statusu objednavky');
+        }        
     }
 }

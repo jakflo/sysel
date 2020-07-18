@@ -31,10 +31,25 @@ class Order_detail_controller extends Controllers {
                  throw $e;
              }
          }
+         
+         if (isset($_POST['change_stat'])) {
+             $new_stat = trim($_POST['status']);
+             if (!$model->validate_status_change($new_stat)) {
+                 $_SESSION['error'] = 'Neplatná změna objednávky';
+                 $this->reload();
+             }
+             else {
+                 if ($new_stat != $model->get_status()) {
+                     $model->change_status($new_stat);
+                     $_SESSION['message'] = 'Změny uloženy';
+                     $this->reload();
+                 }
+             }
+         }
+         
          $this->basic_nfo = $model->get_order_detail();
          $this->client_nfo = $model->get_client_detail();
-         $this->items = $model->get_items();
-        
+         $this->items = $model->get_items();        
         require "{$this->folder}/order_detail.php";                
     }
 }

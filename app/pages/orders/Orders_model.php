@@ -9,11 +9,13 @@ use Sysel\Data_objects\Orders;
 use Sysel\Pages\Orders\Objednavky_s_filtry;
 use Sysel\Utils\Strankovac;
 use Sysel\Pages\Polozky_ve_sklade\Validate_order_by;
+use Exception;
 
 class Orders_model extends Models {
     protected $statuses = array(
         1 => 'Nová', 2 => 'Připravena k odeslání', 
-        3 => 'Expedováno', 4 => 'Probíhá reklamace', 5 => 'Reklamace vyřízena'
+        3 => 'Expedováno', 4 => 'Probíhá reklamace', 
+        5 => 'Reklamace vyřízena', 6 => 'Storno'
     );
     
     /**
@@ -128,6 +130,35 @@ class Orders_model extends Models {
     
     public function get_status_name(int $status) {
         return $this->statuses[$status];        
+    }
+    
+    public function get_permited_status_changes(int $status) {
+        switch ($status) {
+            case 1:
+                return array(1, 6);
+            case 2:
+                return array(2, 1, 3, 6);
+            case 3:
+                return array(3, 2, 1, 6);
+            case 4:
+            case 5:
+                return false;
+            case 6:
+                return array(6, 1);
+            default: 
+                throw new Exception('Neznamy status objednavky');
+        }
+    }
+    
+    public function get_status_changes_select(int $status) {
+        $permited = $this->get_permited_status_changes($status);
+        $select_array = array();
+        if (is_array($permited)) {
+            foreach ($permited as $s_id) {
+                $select_array[$s_id] = $this->get_status_name($s_id);
+            }
+        }
+        return $select_array;
     }
     
 }
