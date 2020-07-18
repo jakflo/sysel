@@ -97,8 +97,9 @@ class Order_search_item_model extends Models {
                 $item_ids = array_slice($item_ids, 0, $item['item_amount']);
             }
             $this->env->db->sendSQL(
-                    "update item set order_id=2, status=2 "
-                    . "where id in({$array_tools->implode_pro_in(array_column($item_ids, 'id'))})"
+                    "update item set order_id=:o_id, status=2 "
+                    . "where id in({$array_tools->implode_pro_in(array_column($item_ids, 'id'))})", 
+                            array(':o_id' => $this->order_id)
                     );
         }
         
